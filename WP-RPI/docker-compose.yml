@@ -1,0 +1,28 @@
+wordpress:
+  image: php7-fpm-arm
+  volumes:
+    - /wordpress_docroot/:/var/www/html/
+  links:
+    - db:mysql
+  environment:
+    WORDPRESS_DB_NAME: dbname
+    WORDPRESS_DB_PASSWORD: dbpw
+    WORDPRESS_DB_USER: dbuser
+nginx:
+  image: alpinx
+  links:
+    - wordpress
+  volumes_from:
+    - wordpress
+  environment:
+    POST_MAX_SIZE: 128m
+    VIRTUAL_HOST: wordpress.example.org
+db:
+  image: armbuilds/mariadb
+  environment:
+    MYSQL_DATABASE: dbname
+    MYSQL_PASSWORD: dbpw
+    MYSQL_ROOT_PASSWORD: example
+    MYSQL_USER: dbuser
+  volumes:
+    - /folder_to_import_dump_from/:/docker-entrypoint-initdb.d/
