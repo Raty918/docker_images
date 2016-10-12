@@ -1,5 +1,5 @@
 wordpress:
-  image: php7-fpm-arm
+  image: alexinthesky/php7-fpm-wp-armhf
   volumes:
     - /wordpress_docroot/:/var/www/html/
   links:
@@ -9,7 +9,7 @@ wordpress:
     WORDPRESS_DB_PASSWORD: dbpw
     WORDPRESS_DB_USER: dbuser
 nginx:
-  image: alpinx
+  image: alexinthesky/nginx-wp-armhf
   links:
     - wordpress
   volumes_from:
