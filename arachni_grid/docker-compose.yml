@@ -1,0 +1,19 @@
+version: '2'
+services:
+  web:
+    image: alexinthesky/arachniwebui
+    ports:
+      - 9292:9292
+    depends_on: 
+      - dispatcher
+    links: 
+      - dispatcher
+  dispatcher:
+    image: alexinthesky/arachnirpcd
+  dispatcher_grid:
+    image: alexinthesky/arachnirpcd
+    depends_on: 
+      - dispatcher
+    links: 
+      - dispatcher
+    command: "--neighbour=dispatcher:7331"
