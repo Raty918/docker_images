@@ -1,0 +1,16 @@
+consul:
+  ports:
+  - 8500:8500/tcp
+  command:
+  - -server
+  - -bootstrap
+  - -ui-dir
+  - /ui
+  image: progrium/consul:latest
+registrator:
+  command:
+  - -internal
+  - consul://consul:8500
+  image: gliderlabs/registrator:latest
+  volumes:
+  - /var/run/docker.sock:/tmp/docker.sock
