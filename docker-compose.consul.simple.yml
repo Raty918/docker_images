@@ -10,7 +10,13 @@ consul:
 registrator:
   command:
   - -internal
-  - consul://consul:8500
+  - consul://172.17.0.1:8500
   image: gliderlabs/registrator:latest
   volumes:
   - /var/run/docker.sock:/tmp/docker.sock
+haproxy:
+  image: asteris/haproxy-consul
+  net: host
+  environment:
+   - HAPROXY_DOMAIN=achappaz.fr
+   - CONSUL_CONNECT=172.17.0.1:8500
