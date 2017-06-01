@@ -1,17 +1,19 @@
 version: '2'
 services:
   web:
-    image: alexinthesky/arachniwebui
+    image: arachniweblocal
     ports:
       - 9292:9292
     depends_on: 
       - dispatcher
     links: 
       - dispatcher
+    volumes:
+      - /home/superuser/arachniWeb:/home/arachniwebreport
   dispatcher:
-    image: alexinthesky/arachnirpcd
+    image: arachnirpcdlocal
   dispatcher_grid:
-    image: alexinthesky/arachnirpcd
+    image: arachnirpcdlocal
     depends_on: 
       - dispatcher
     links: 
