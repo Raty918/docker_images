@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  node1:
+    build:
+      context: .
+    image: mariadb-net
+    restart: always
+    hostname: node1
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - REPLICATION_PASSWORD=test
+      - MYSQL_DATABASE=maria
+      - MYSQL_USER=maria
+      - MYSQL_PASSWORD=test
+      - GALERA=On
+      - NODE_NAME=node1
+      - NODE_ADDRESS=10.0.0.11
+      - CLUSTER_NAME=maria_cluster
+      - CLUSTER_ADDRESS=gcomm://10.0.0.11,10.0.0.12,10.0.0.13
+    command: --wsrep-new-cluster --user=mysql

@@ -4,16 +4,12 @@ services:
     image: alexinthesky/arachniwebui
     ports:
       - 9292:9292
-    depends_on: 
-      - dispatcher
-    links: 
-      - dispatcher
   dispatcher:
     image: alexinthesky/arachnirpcd
-  dispatcher_grid:
+    command: 
+      - \'--nickname=$(hostname)\'
+  dispatcher-worker:
     image: alexinthesky/arachnirpcd
-    depends_on: 
-      - dispatcher
-    links: 
-      - dispatcher
-    command: "--neighbour=dispatcher:7331"
+    command: 
+      - \'--nickname=$(hostname)\'
+      - --neighbour=dispatcher:7331
