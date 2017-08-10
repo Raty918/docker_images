@@ -37,4 +37,4 @@ ENV	MAX_CONNECTIONS=100 \
 
 ENTRYPOINT	["/entrypoint.sh"]
 
-CMD ["mysqld","--user=root"]
+CMD ["mysqld"]

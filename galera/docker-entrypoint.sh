@@ -119,8 +119,9 @@ if [ "$1" = 'mysqld' ]; then
 		--wsrep_cluster_name="$CLUSTER_NAME" \
 		--wsrep_cluster_address="$CLUSTER_ADDRESS" \
 		--wsrep_node_name="$NODE_NAME" \
-		--wsrep_sst_auth="replication:$REPLICATION_PASSWORD" \
-		--wsrep_sst_receive_address=$IP
+		--wsrep_node_address="$NODE_ADDRESS" \
+		--wsrep_sst_auth="replication:$REPLICATION_PASSWORD" 
+#		--wsrep_sst_receive_address=$IP
 	fi
 
 	if [ -n "$LOG_BIN" ]; then
