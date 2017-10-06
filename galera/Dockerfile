@@ -1,4 +1,4 @@
-FROM		mariadb:10.1
+FROM		mariadb:10.2
 
 
 
@@ -23,7 +23,7 @@ COPY		docker-entrypoint.sh /entrypoint.sh
 ENV TERM xterm
 
 # default values for configuration options
-ENV	MAX_CONNECTIONS=100 \
+ENV	MAX_CONNECTIONS=150 \
 	PORT=3306 \
 	MAX_ALLOWED_PACKET=16M \
 	QUERY_CACHE_SIZE=16M \
