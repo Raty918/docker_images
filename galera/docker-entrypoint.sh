@@ -21,7 +21,8 @@ sed -i -e "s/^\[mysqld\]/\[mysqld\]\nsync_binlog=${SYNC_BINLOG}/" /etc/mysql/my.
 sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb_buffer_pool_size=${INNODB_BUFFER_POOL_SIZE}/" /etc/mysql/my.cnf 
 sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb_old_blocks_time=${INNODB_OLD_BLOCKS_TIME}/" /etc/mysql/my.cnf 
 sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb_flush_log_at_trx_commit=${INNODB_FLUSH_LOG_AT_TRX_COMMIT}/" /etc/mysql/my.cnf 
-
+sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb-file-format=${INNODB_FILE_FORMAT}/" /etc/mysql/my.cnf 
+sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb_default_row_format=${INNODB_RAW_FORMAT}/" /etc/mysql/my.cnf
 if [ -n "$INNODB_FLUSH_METHOD" ]; then
 	sed -i -e "s/^\[mysqld\]/\[mysqld\]\ninnodb_flush_method=${INNODB_FLUSH_METHOD}/" /etc/mysql/my.cnf 
 fi
