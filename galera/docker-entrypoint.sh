@@ -89,7 +89,7 @@ if [ "$1" = 'mysqld' ]; then
 		if [ -n "$GALERA" ]; then
 			cat >> "$tempSqlFile" <<-EOSQL
 			CREATE USER 'replication'@'%' IDENTIFIED BY '${REPLICATION_PASSWORD}';
-			GRANT RELOAD,LOCK TABLES,REPLICATION,PROCESS,SELECT CLIENT ON *.* TO 'replication'@'%';
+			GRANT RELOAD,LOCK TABLES,REPLICATION CLIENT,PROCESS,SELECT ON *.* TO 'replication'@'%';
 			EOSQL
 		fi
 
