@@ -5,10 +5,13 @@ services:
     volumes:
      - ./vhost.d/:/etc/nginx/vhost.d
      - ./certs:/etc/nginx/certs:ro
+     - ./conf.d:/etc/nginx/conf.d
      - /usr/share/nginx/html
      - /var/run/docker.sock:/tmp/docker.sock:ro
     ports:
      - 80:80
+     - 443:443
+    network_mode: bridge
   nginx-ssl-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
@@ -16,12 +19,4 @@ services:
      - ./certs:/etc/nginx/certs:rw
     volumes_from:
      - nginx-proxy
-  sslh:
-    image: amondit/sslh
-    ports:
-     - "2222:22"
-     - "443:443"
-    environment:
-     SSH_HOST: dlbox.home
-     HTTPS_HOST: nginx-proxy
-     HTTPS_PORT: 443
+    network_mode: bridge
