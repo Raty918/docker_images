@@ -1,0 +1,51 @@
+version: '3'
+services:
+  consul:
+    image: consul:1.0.6
+    command: agent -dev -client 0.0.0.0 -ui
+    ports:
+      - "8500:8500"
+    environment:
+      - SERVICE_IGNORE=true
+  registrator:
+    image: gliderlabs/registrator:master
+    command:
+      - -internal
+      - -retry-attempts=-1
+      - -resync=5
+      - -cleanup
+      - consul://consul:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    depends_on:
+      - consul
+  zookeeper:
+    image: nificonsulzk_zookeeper
+    build:
+      context: ./
+      dockerfile: Dockerfile.zookeeper
+    environment:
+      - CONSUL_HOST=consul
+      - CLUSTER_ID=MYCLUSTER
+      - SERVICE_2181_NAME=zookeeper-MYCLUSTER
+      - SERVICE_2888_IGNORE=true
+      - SERVICE_3888_IGNORE=true
+    expose:
+      - 2181
+    depends_on:
+      - consul
+    deploy:
+      replicas: 3
+  nifi_node:
+    image: nificonsulzk_nifi_node
+    build:
+      context: ./
+      dockerfile: Dockerfile.nifi
+    ports:
+      - 8080
+    environment:
+      - CONSUL_CONNECT=consul:8500
+      - IS_CLUSTER_NODE="1"
+      - SERVICE_IGNORE=true
+    deploy:
+      replicas: 3
