@@ -28,7 +28,8 @@ ENV CLUSTER_ID="MYCLUSTER" \
 EXPOSE 2181 2888 3888
 COPY ./start-zk /
 COPY ./get-container-id.sh /
-RUN chmod +x /get-container-id.sh
+COPY ./get-container-id_swarm.sh /
+RUN chmod +x /get-container-id.sh /get-container-id_swarm.sh
 
 CMD ["/start-zk"]
 

@@ -4,6 +4,12 @@ CLUSTER_ID=${CLUSTER_ID:-MYCLUSTER}
 SERVICE_NAME=${SERVICE_2181_NAME:-$CLUSTER_ID-zk}
 CONTAINER_IP=$(ip address show eth0|grep inet| sed "s/^.*inet \([^/]\+\).*/\1/")
 
+if [ -z "$SWARM" ]; then
+    GETCONTAINERID="/get-container-id.sh"
+else
+    GETCONTAINERID="/get-container-id_swarm.sh"
+fi
+
 if [ -z "$CLUSTER_ID" ]; then
     echo "CLUSTER_ID is not set" >&2
     exit 1
@@ -17,13 +23,13 @@ initLimit=5
 syncLimit=2
 
 {{range service "$SERVICE_NAME|any"}}
-server.{{plugin "/get-container-id.sh" .ID}}={{.Address}}:2888:3888
+server.{{plugin "$GETCONTAINERID" .ID}}={{.Address}}:2888:3888
 {{end}}
 
 EOF
 
 cat > /conf/myid.tmpl <<EOF
-{{range service "$SERVICE_NAME|any"}}{{if  eq .Address "$CONTAINER_IP" }}{{plugin "/get-container-id.sh" .ID}}{{end}}{{end}}
+{{range service "$SERVICE_NAME|any"}}{{if  eq .Address "$CONTAINER_IP" }}{{plugin "$GETCONTAINERID" .ID}}{{end}}{{end}}
 EOF
 
 cat /conf/myid.tmpl

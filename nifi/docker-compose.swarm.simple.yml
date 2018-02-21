@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   consul:
     image: consul:1.0.6
@@ -31,6 +31,7 @@ services:
       - SERVICE_2181_NAME=zookeeper-MYCLUSTER
       - SERVICE_2888_IGNORE=true
       - SERVICE_3888_IGNORE=true
+      - SWARM=true
     expose:
       - 2181
     depends_on:
