@@ -43,11 +43,12 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.nifi
-    ports:
-      - 8080
+      #    ports:
+      #- 8080
     environment:
       - CONSUL_CONNECT=consul:8500
       - IS_CLUSTER_NODE="1"
       - SERVICE_IGNORE=true
     deploy:
       replicas: 3
+      endpoint_mode: dnsrr
