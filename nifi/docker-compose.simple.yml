@@ -21,7 +21,7 @@ services:
     depends_on:
       - consul
   zookeeper:
-    image: alexinthesky/zookeeper
+    image: alexinthesky/zookeeper:latest
     build:
       context: ./
       dockerfile: Dockerfile.zookeeper
@@ -38,7 +38,7 @@ services:
     deploy:
       replicas: 3
   nifi_node:
-    image: alexinthesky/nifi
+    image: alexinthesky/nifi:latest
     build:
       context: ./
       dockerfile: Dockerfile.nifi
