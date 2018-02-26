@@ -1,13 +1,28 @@
 version: '3.4'
 services:
+  traefik:
+    image: traefik
+    ports:
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - --docker
+      - --docker.swarmmode
+      - --docker.domain=traefik
+      - --docker.watch
+      - --api
   consul:
     image: consul:1.0.6
     command: agent -dev -client 0.0.0.0 -ui
-    ports:
-      - "8500:8500"
     environment:
       - CONSUL_BIND_INTERFACE=eth0
       - SERVICE_IGNORE=true
+    deploy:
+      endpoint_mode: dnsrr
+      labels:
+        - traefik.port=8500
   registrator:
     image: gliderlabs/registrator:master
     command:
@@ -21,7 +36,7 @@ services:
     depends_on:
       - consul
   zookeeper:
-    image: alexinthesky/zookeeper
+    image: alexinthesky/zookeeper:latest
     build:
       context: ./
       dockerfile: Dockerfile.zookeeper
@@ -32,23 +47,24 @@ services:
       - SERVICE_2888_IGNORE=true
       - SERVICE_3888_IGNORE=true
       - SWARM=true
-    expose:
-      - 2181
     depends_on:
       - consul
     deploy:
       replicas: 3
   nifi_node:
-    image: alexinthesky/nifi
+    image: alexinthesky/nifi:latest
     build:
       context: ./
       dockerfile: Dockerfile.nifi
-      #    ports:
-      #- 8080
     environment:
       - CONSUL_CONNECT=consul:8500
       - IS_CLUSTER_NODE="1"
       - SERVICE_IGNORE=true
+    depends_on:
+      - consul
     deploy:
       replicas: 3
       endpoint_mode: dnsrr
+      labels:
+        - traefik.port=8080
+        - traefik.backend.loadbalancer.stickiness=true
