@@ -1,0 +1,14 @@
+version: "2"
+services:
+  nginx-autoindex:
+    network_mode: bridge
+    build: .
+    image: nginx-autoindex
+    volumes:
+      - /media/Videos:/usr/share/nginx/html:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd
+    environment:
+      VIRTUAL_HOST: films.achappaz.fr
+      LETSENCRYPT_HOST: films.achappaz.fr
+      LETSENCRYPT_EMAIL: alex@achappaz.fr
+

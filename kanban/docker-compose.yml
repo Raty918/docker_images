@@ -1,0 +1,13 @@
+version: "2"
+services:
+  kanban:
+    network_mode: bridge
+    image: mkodockx/docker-kanban
+    volumes:
+      - /media/Webpages/kanban/data:/var/www/html/data
+        #  - /media/Webpages/kanban/assets://var/www/html/assets
+    environment:
+      VIRTUAL_HOST: kanban.achappaz.fr
+      LETSENCRYPT_HOST: kanban.achappaz.fr
+      LETSENCRYPT_EMAIL: alex@achappaz.fr
+

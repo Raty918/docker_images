@@ -1,0 +1,14 @@
+version: '3'
+services:
+  duplicati:
+    image: alexinthesky/duplicati:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      VIRTUAL_HOST: duplicati.achappaz.fr
+      LETSENCRYPT_HOST: duplicati.achappaz.fr      
+      LETSENCRYPT_EMAIL: alex@achappaz.fr      
+    network_mode: bridge
+    expose:
+      - 8200

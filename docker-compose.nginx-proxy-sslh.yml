@@ -1,30 +1,27 @@
-nginx-proxy:
-  image: jwilder/nginx-proxy
-  volumes:
-   - /usr/share/nginx/html
-   - /media/docker/nginx/vhost.d/:/etc/nginx/vhost.d
-   - /var/run/docker.sock:/tmp/docker.sock:ro
-   - /media/docker/certs:/etc/nginx/certs:ro
-  ports:
-   - 8099:80
-nginx-ssl-companion:
-  image: jrcs/letsencrypt-nginx-proxy-companion
-  volumes:
-   - /var/run/docker.sock:/var/run/docker.sock:ro
-   - /media/docker/certs:/etc/nginx/certs:rw
-  volumes_from:
-   - nginx-proxy
-  links: 
-   - nginx-proxy
-   - sslh
-  labels:
-    io.rancher.sidekicks: sslh, nginx-proxy
-sslh:
-  image: amondit/sslh
-  ports:
-   - 2222:22
-   - 4433:443
-  environment:
-   HTTPS_HOST: nginx-proxy
-   HTTPS_PORT: 443
-   SSH_HOST: masta.home
+version: "2"
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    volumes:
+     - ./vhost.d/:/etc/nginx/vhost.d
+     - ./certs:/etc/nginx/certs:ro
+     - /usr/share/nginx/html
+     - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+     - 80:80
+  nginx-ssl-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - ./certs:/etc/nginx/certs:rw
+    volumes_from:
+     - nginx-proxy
+  sslh:
+    image: amondit/sslh
+    ports:
+     - "2222:22"
+     - "443:443"
+    environment:
+     SSH_HOST: dlbox.home
+     HTTPS_HOST: nginx-proxy
+     HTTPS_PORT: 443

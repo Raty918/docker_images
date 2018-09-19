@@ -1,0 +1,19 @@
+version: '2'
+services:
+  db:
+    container_name: db
+    image: million12/mariadb
+    environment:
+      MARIADB_USER: cactiuser
+      MARIADB_PASS: my_password
+      #    network_mode: bridge
+  cacti:
+    image: polinux/cacti
+    environment:
+      DB_USER: cactiuser
+      DB_PASS: my_password
+      DB_ADDRESS: db
+      VIRTUAL_HOST: cacti.achappaz.fr
+      LETSENCRYPT_HOST: cacti.achappaz.fr      
+      LETSENCRYPT_EMAIL: alex@achappaz.fr      
+      #    network_mode: bridge

@@ -4,18 +4,12 @@ services:
     image: arachniweblocal
     ports:
       - 9292:9292
-    depends_on: 
-      - dispatcher
-    links: 
-      - dispatcher
-    volumes:
-      - /home/superuser/arachniWeb:/home/arachniwebreport
   dispatcher:
-    image: arachnirpcdlocal
-  dispatcher_grid:
-    image: arachnirpcdlocal
-    depends_on: 
-      - dispatcher
-    links: 
-      - dispatcher
-    command: "--neighbour=dispatcher:7331"
+    image: alexinthesky/arachnirpcd
+    command: 
+      - \'--nickname=$(hostname)\'
+  dispatcher-worker:
+    image: alexinthesky/arachnirpcd
+    command: 
+      - \'--nickname=$(hostname)\'
+      - --neighbour=dispatcher:7331
