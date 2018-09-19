@@ -26,9 +26,9 @@ spec:
   def image = "jenkins/jnlp-slave"
   node(label) {
     stage('Build Docker image') {
-/*      git 'https://github.com/jenkinsci/docker-jnlp-slave.git'*/
+      echo scm.getUserRemoteConfigs()
       container('docker') {
-        sh "ls"
+        sh "env"
       }
     }
   }
